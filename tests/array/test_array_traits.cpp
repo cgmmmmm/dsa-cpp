@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../include/data_structures/cgm_array.hpp"
+#include "../../include/data_structures/cgm_array.hpp"
 
 int main()
 {
