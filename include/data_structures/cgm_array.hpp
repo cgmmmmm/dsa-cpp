@@ -59,12 +59,74 @@ namespace cgm
 		// Data Member
 		typename detail::array_traits<T, N>::storage_type _M_elems;
 
-		// Standard Types
+		// Member Types
 		using size_type			= std::size_t;
+		using value_type		= T;
+		using reference			= value_type&;
+		using const_reference		= const value_type&;
+		using pointer			= value_type*;
+		using const_pointer		= const value_type*;
 
 		// Capacity
 		[[nodiscard]] constexpr bool empty() const noexcept { return N==0; };
 		[[nodiscard]] constexpr size_type size() const noexcept { return N; };
 		[[nodiscard]] constexpr size_type max_size() const noexcept { return N; };
+
+		// Element access
+		constexpr reference at(size_type position)
+		{
+			if (position >= N) 
+			{
+				throw std::out_of_range("cgm::array::at: Index out of bounds");
+			}
+			return detail::array_traits<T, N>::ref(_M_elems, position);
+		}
+		constexpr const_reference at(size_type position) const
+		{
+			if (position >= N)
+			{
+				throw std::out_of_range("cgm::array::at: Index out of bounds");
+			}
+			return detail::array_traits<T, N>::ref(_M_elems, position);
+		}
+		
+		[[nodiscard]] constexpr reference operator[](size_type position) noexcept
+		{
+			return detail::array_traits<T, N>::ref(_M_elems, position);
+		}
+
+		[[nodiscard]] constexpr const_reference operator[](size_type position) const noexcept
+		{
+			return detail::array_traits<T, N>::ref(_M_elems, position);
+		}
+
+		[[nodiscard]] constexpr reference front() noexcept
+		{
+			return detail::array_traits<T, N>::ref(_M_elems, 0);
+		}
+		[[nodiscard]] constexpr const_reference front() const noexcept
+		{
+			return detail::array_traits<T, N>::ref(_M_elems, 0);
+		}
+
+		[[nodiscard]] constexpr reference back() noexcept
+		{
+			return detail::array_traits<T, N>::ref(_M_elems, N>0 ? N-1 : 0);
+		}
+		[[nodiscard]] constexpr const_reference back() const noexcept
+		{
+			return detail::array_traits<T, N>::ref(_M_elems, N>0 ? N-1 : 0);
+		}
+
+		[[nodiscard]] constexpr pointer data() noexcept
+		{
+			return detail::array_traits<T, N>::ptr(_M_elems);
+		}
+		[[nodiscard]] constexpr const_pointer data() const noexcept
+		{
+			return detail::array_traits<T, N>::ptr(_M_elems);
+		}
+
+
 	};
 }
