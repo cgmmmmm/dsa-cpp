@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <stdexcept>
+#include <iterator>
 
 #endif
 
@@ -66,6 +67,10 @@ namespace cgm
 		using const_reference		= const value_type&;
 		using pointer			= value_type*;
 		using const_pointer		= const value_type*;
+		using iterator			= T*;
+		using const_iterator		= const T*;
+		using reverse_iterator		= std::reverse_iterator<iterator>;
+		using const_reverse_iterator	= const std::reverse_iterator<iterator>;
 
 		// Capacity
 		[[nodiscard]] constexpr bool empty() const noexcept { return N==0; };
@@ -127,6 +132,22 @@ namespace cgm
 			return detail::array_traits<T, N>::ptr(_M_elems);
 		}
 
+		// Iterators
+		[[nodiscard]] constexpr iterator begin() noexcept { return iterator(data()); }
+		[[nodiscard]] constexpr const_iterator begin() const noexcept { return const_iterator(data()); }
+		[[nodiscard]] constexpr const_iterator cbegin() const noexcept { return begin(); }
+
+		[[nodiscard]] constexpr iterator end() noexcept { return iterator(data() + N); }
+		[[nodiscard]] constexpr const_iterator end() const noexcept { return const_iterator(data() + N); }
+		[[nodiscard]] constexpr const_iterator cend() const noexcept { return end(); }
+
+		[[nodiscard]] constexpr reverse_iterator rbegin() noexcept { return reverse_iterator(end()); }
+		[[nodiscard]] constexpr const_reverse_iterator rbegin() const noexcept { return const_reverse_iterator(end()); }
+		[[nodiscard]] constexpr const_reverse_iterator crbegin() const noexcept { return rbegin(); }
+
+		[[nodiscard]] constexpr reverse_iterator rend() noexcept { return reverse_iterator(begin()); }
+		[[nodiscard]] constexpr const_reverse_iterator rend() const noexcept { return const_reverse_iterator(begin()); }
+		[[nodiscard]] constexpr const_reverse_iterator crend() const noexcept { return rend(); }
 
 	};
 }
